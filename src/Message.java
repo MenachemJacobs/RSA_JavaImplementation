@@ -10,5 +10,5 @@ import java.math.BigInteger;
 public class Message {
     private int[] text;
     private BigInteger e;
-    private BigInteger n;
+    private BigInteger n; 
 }
