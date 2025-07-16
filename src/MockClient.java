@@ -24,9 +24,9 @@ public class MockClient {
         String message = "Hi server!";
         int[] encryptedMessage = RSAEncryptDecryptMethods.encrypt(message, serverE, serverN);
 
-        // 3. Prepare dummy client keys (replace with real keys in production)
-        BigInteger clientP = BigInteger.valueOf(10007);  // prime 1
-        BigInteger clientQ = BigInteger.valueOf(10009);  // prime 2
+        // 3. Create client keys
+        BigInteger clientP = BigInteger.valueOf(10007);
+        BigInteger clientQ = BigInteger.valueOf(10009);
         BigInteger clientN = clientP.multiply(clientQ);
         BigInteger clientPhi = clientP.subtract(BigInteger.ONE).multiply(clientQ.subtract(BigInteger.ONE));
         BigInteger clientE = BigInteger.valueOf(65537);
@@ -41,7 +41,6 @@ public class MockClient {
 
         // 6. Convert message to JSON string
         String jsonRequest = objectMapper.writeValueAsString(outgoing);
-
         HttpEntity<String> requestEntity = new HttpEntity<>(jsonRequest, headers);
 
         // 7. POST encrypted message and receive encrypted response
@@ -51,7 +50,7 @@ public class MockClient {
         // 8. Parse encrypted response
         int[] encryptedResponse = objectMapper.readValue(jsonResponse, int[].class);
 
-        // 9. Decrypt response with dummy private key (replace with real private key)
+        // 9. Decrypt response with private key
         String decryptedResponse = RSAEncryptDecryptMethods.decrypt(encryptedResponse, clientD, clientN);
 
         System.out.println("Server response: " + decryptedResponse);
